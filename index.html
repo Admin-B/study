@@ -5,11 +5,8 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <canvas id='canvas' width=500 height=500>
+    <img src='http://i.imgur.com/6HLXT6m.png'>
     <script type='text/javascript'>
-      var canvas=document.getElementById('canvas');
-      var ctx   =canvas.getContext('2d');
-
       function Node(name){
         this.connection=[];
         this.count=0;
@@ -52,16 +49,7 @@
             continue;
           }
           if(n===e){
-            console.log(e.count);
-            var temp=e;
-            var path="";
-            while(temp.prev){
-              path+=temp.name+' ';
-              temp=temp.prev;
-            }
-            path='A'+path.split('').reverse().join('');
-            console.log(path);
-            return;
+
           }
           for(var i=0; i<n.connection.length; i++){
             var c=n.connection[i];
@@ -77,6 +65,16 @@
           }
           n.visited=true;
         }
+        console.log(e.count);
+        var temp=e;
+        var path="";
+        while(temp.prev){
+          path+=temp.name+' ';
+          temp=temp.prev;
+        }
+        path='A'+path.split('').reverse().join('');
+        console.log(path);
+        return;
       }
     </script>
   </body>
