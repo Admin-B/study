@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>sample1</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <canvas id='canvas' width=500 height=500>
+    <script type='text/javascript'>
+      var canvas=document.getElementById('canvas');
+      var ctx   =canvas.getContext('2d');
+
+      function Node(name){
+        this.connection=[];
+        this.count=0;
+        this.name=name;
+      }
+      Node.prototype.addConnection=function(){
+        for(var i=0; i<arguments.length; i++){
+          this.connection.push(arguments[i]);
+        }
+      }
+      var nodes=[];
+      function init(){
+        nodes=[];
+        var str=['A','B','C','D','E','F','G','H','I'];
+        for(var i=0; i<9; i++){
+          nodes.push(new Node(str[i]));
+        }
+        nodes[0].addConnection(nodes[1],nodes[2],nodes[3]);
+        nodes[1].addConnection(nodes[0],nodes[3],nodes[4]);
+        nodes[2].addConnection(nodes[0],nodes[5],nodes[8]);
+        nodes[3].addConnection(nodes[0],nodes[1],nodes[4],nodes[5],nodes[6]);
+        nodes[4].addConnection(nodes[1],nodes[3],nodes[6],nodes[7]);
+        nodes[5].addConnection(nodes[2],nodes[3],nodes[8],nodes[6]);
+        nodes[6].addConnection(nodes[3],nodes[4],nodes[4],nodes[7],nodes[8]);
+        nodes[7].addConnection(nodes[4],nodes[6]);
+        nodes[8].addConnection(nodes[2],nodes[5],nodes[6]);
+      }
+      function search(s,e){
+        init();
+        if(typeof s=='number'){
+          s=nodes[s];
+        }
+        if(typeof e=='number'){
+          e=nodes[e];
+        }
+        var Q=[s];
+        while( Q.length>0 ){
+          var n=Q.shift();
+          if(n.visited===true){
+            continue;
+          }
+          if(n===e){
+            console.log(e.count);
+            var temp=e;
+            var path="";
+            while(temp.prev){
+              path+=temp.name+' ';
+              temp=temp.prev;
+            }
+            path='A'+path.split('').reverse().join('');
+            console.log(path);
+            return;
+          }
+          for(var i=0; i<n.connection.length; i++){
+            var c=n.connection[i];
+            if(c.visited===true){
+              continue;
+            }
+            Q.push(c);
+            if(c.count!==0 && c.count<n.count+1){
+              continue;
+            }
+            c.prev=n;
+            c.count=n.count+1;
+          }
+          n.visited=true;
+        }
+      }
+    </script>
+  </body>
+</html>
